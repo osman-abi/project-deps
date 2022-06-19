@@ -19,7 +19,7 @@ services:
   # Django Application
   app:
     build:
-      context: ./core
+      context: .
       dockerfile: Dockerfile
     ports:
       - 8000:8000
