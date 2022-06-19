@@ -1,0 +1,47 @@
+version: "3.8"
+services:
+
+
+  # Postgre SQL
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=deps_db
+      - POSTGRES_USER=deps_db_user
+      - POSTGRES_PASSWORD=deps_db_123
+    container_name: postgres_db
+
+  # Django Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    image: app:django
+    container_name: django_app
+    command: /venv/bin/gunicorn youtube_transcriber.wsgi --bind 0.0.0.0:8000
+    depends_on:
+      - db
+
+  # Nginx
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx-proxy
+    ports:
+      - 80:80
+    volumes:
+      - ./youtube_transcriber/static:/var/www/backend/static
+      - ./youtube_transcriber/media:/var/www/backend/media
+    depends_on:
+      - app
+
+
+
