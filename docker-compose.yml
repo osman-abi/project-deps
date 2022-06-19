@@ -25,7 +25,7 @@ services:
       - 8000:8000
     image: app:django
     container_name: django_app
-    command: /venv/bin/gunicorn youtube_transcriber.wsgi --bind 0.0.0.0:8000
+    command: /venv/bin/gunicorn core.wsgi --bind 0.0.0.0:8000
     depends_on:
       - db
 
@@ -38,8 +38,8 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./youtube_transcriber/static:/var/www/backend/static
-      - ./youtube_transcriber/media:/var/www/backend/media
+      - ./core/static:/var/www/backend/static
+      - ./core/media:/var/www/backend/media
     depends_on:
       - app
 
