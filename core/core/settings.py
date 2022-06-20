@@ -127,7 +127,7 @@ if not DEBUG:
             'USER': 'deps_db_user',
             'NAME': 'deps_db',
             'PASSWORD': 'deps_db_123',
-            'HOST': 'postgres',
+            'HOST': 'localhost',
             'PORT': 5432,
         }
     }
