@@ -10,7 +10,7 @@ services:
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_HOST=postgres
+      - POSTGRES_HOST=localhost
       - POSTGRES_DB=deps_db
       - POSTGRES_USER=deps_db_user
       - POSTGRES_PASSWORD=deps_db_123
