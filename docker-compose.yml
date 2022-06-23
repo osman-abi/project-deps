@@ -38,7 +38,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./core/staticfiles:/var/www/backend/staticfiles
+      - ./core/staticfiles:/var/www/backend/static
       - ./core/media:/var/www/backend/media
     depends_on:
       - app
