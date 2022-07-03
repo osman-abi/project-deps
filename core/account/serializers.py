@@ -195,3 +195,17 @@ class UserPasswordResetSerializer(serializers.Serializer):
             raise serializers.ValidationError('Token is not Valid or Expired')
 
 
+class ChangeUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields = ['name','surname','phone_number','address']
+    
+    def update(self, instance, validated_data):
+        instance.first_name = validated_data['name']
+        instance.last_name = validated_data['surname']
+        instance.email = validated_data['phone_number']
+        instance.username = validated_data['address']
+
+        instance.save()
+
+        return instance

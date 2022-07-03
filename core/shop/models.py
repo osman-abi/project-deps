@@ -30,6 +30,9 @@ class SubCategory(models.Model):
 
 class ProductImages(models.Model):
     image = models.ImageField(upload_to='images/')
+    
+    def __str__(self):
+        return self.image.url
 
 class ProductType(models.Model):
     title = models.CharField(max_length=200, blank=True, null=True)

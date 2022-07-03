@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, status, views, permissions
-from .serializers import RegisterSerializer, LoginSerializer, LogoutSerializer, UserSerializer
+from .serializers import RegisterSerializer, LoginSerializer, LogoutSerializer, UserSerializer, ChangeUserSerializer
 from rest_framework.response import Response
 from .models import User
 from django.shortcuts import redirect
@@ -99,3 +99,10 @@ class UserPasswordResetView(APIView):
   def post(self, request, uid, token, format=None):
     serializer = UserPasswordResetSerializer(data=request.data, context={'uid':uid, 'token':token})
     serializer.is_valid(raise_exception=True)
+
+
+class UpdateProfileView(generics.UpdateAPIView):
+
+    queryset = User.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ChangeUserSerializer
