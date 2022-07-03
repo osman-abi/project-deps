@@ -8,6 +8,5 @@ urlpatterns = [
     path('product/', search_api),
     path('filter/', filter_api),
     path('related-products/<int:pk>', related_product_api),
-    path('images/>', images),
 
 ]
