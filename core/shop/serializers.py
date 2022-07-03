@@ -68,6 +68,7 @@ class ProductCategorySerializer(ModelSerializer):
 
 class ProductSerializer(ModelSerializer):
     category = ProductCategorySerializer()
+    images = ProductImageSerializer(read_only=True, many=True)
     type = ProductTypeSerializer()
     model = ProductModelSerializer()
 
