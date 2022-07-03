@@ -66,9 +66,23 @@ class ProductCategorySerializer(ModelSerializer):
         model = SubCategory
         fields = '__all__'
 
+    
+class ProductCategory2Serializer(ModelSerializer):
+    class Meta:
+        model = ChildCategory
+        fields = '__all__'
+
+
+class ProductCategory1Serializer(ModelSerializer):
+    class Meta:
+        model = ParentCategory
+        fields = '__all__'
+
 
 class ProductSerializer(ModelSerializer):
-    category = ProductCategorySerializer()
+    category1 = ProductCategory1Serializer()
+    category2 = ProductCategory2Serializer()
+    category3 = ProductCategorySerializer()
     images = ProductImageSerializer(read_only=True, many=True)
     type = ProductTypeSerializer()
     model = ProductModelSerializer()
