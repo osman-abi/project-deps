@@ -1,4 +1,5 @@
 from abc import ABC
+from statistics import mode
 
 from .models import *
 from rest_framework.serializers import ModelSerializer, Serializer
@@ -81,3 +82,17 @@ class FilterSerializer(Serializer):
     category = serializers.ListField()
     min_price = serializers.FloatField()
     max_price = serializers.FloatField()
+
+
+class CheckoutSerializer(ModelSerializer):
+    class Meta:
+        model = CheckOut
+        fields = '__all__'
+
+    
+class OrderedProductsSerializer(ModelSerializer):
+    products = ProductSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = CheckOut
+        fields = '__all__'

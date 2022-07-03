@@ -46,7 +46,9 @@ class ProductModel(models.Model):
 
 
 class Product(models.Model):
-    category = models.ForeignKey("SubCategory", on_delete=models.CASCADE)
+    category1 = models.ForeignKey("ParentCategory", on_delete=models.CASCADE)
+    category2 = models.ForeignKey("ChildCategory", on_delete=models.CASCADE)
+    category3 = models.ForeignKey("SubCategory", on_delete=models.CASCADE)
     images = models.ManyToManyField(ProductImages)
     manifacturer = models.CharField(max_length=200, blank=True, null=True, verbose_name='istehsalçı')
     title = models.CharField(max_length=200, blank=True, null=True, verbose_name='başlıq')
@@ -71,4 +73,11 @@ class Product(models.Model):
 
 
 class CheckOut(models.Model):
-    pass
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product)
+    quantity = models.IntegerField()
+    sum_price = models.FloatField()
+
+    def __str__(self):
+        return self.user
+

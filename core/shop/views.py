@@ -9,8 +9,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.filters import OrderingFilter, SearchFilter
 
-from .serializers import ParentCategorySerializer, ProductImageSerializer, ProductSerializer, FilterSerializer
-from .models import ParentCategory, Product, ProductImages
+from .serializers import CheckoutSerializer, ParentCategorySerializer, ProductImageSerializer, ProductSerializer, FilterSerializer, OrderedProductsSerializer
+from .models import CheckOut, ParentCategory, Product, ProductImages
 from .utils import related_products
 
 
@@ -63,8 +63,26 @@ class FilterProductAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class CheckOutAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer_class = CheckoutSerializer(data=request.data)
+        if serializer_class.is_valid():
+            serializer_class.save()
+            return Response(serializer_class.data, status=status.HTTP_200_OK)
+        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class OrderedProductsAPIView(ListAPIView):
+    queryset = CheckOut.objects.all()
+    serializer_class = OrderedProductsSerializer
+    permission_classes = [AllowAny]
+
+
 category_api = CategoryAPIView.as_view()
 product_api = ProductAPIView.as_view()
 search_api = SearchProductAPIView.as_view()
 filter_api = FilterProductAPIView.as_view()
 related_product_api = RelatedProductAPIView.as_view()
+checkout = CheckOutAPIView.as_view()
+ordered_products = OrderedProductsAPIView.as_view()
