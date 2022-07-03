@@ -42,6 +42,12 @@ class SubCategorySerializer(ModelSerializer):
         fields = ['title', 'child']
 
 
+class ProductImageSerializer(ModelSerializer):
+    class Meta:
+        model = ProductImages
+        fields = '__all__'
+
+
 class ProductTypeSerializer(ModelSerializer):
     class Meta:
         model = ProductType
@@ -64,6 +70,7 @@ class ProductSerializer(ModelSerializer):
     category = ProductCategorySerializer()
     type = ProductTypeSerializer()
     model = ProductModelSerializer()
+    images = ProductImageSerializer()
 
     class Meta:
         model = Product
