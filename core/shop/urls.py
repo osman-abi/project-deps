@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import images, category_api, product_api, search_api, related_product_api, filter_api,\
+from .views import  category_api, product_api, search_api, related_product_api, filter_api,\
     ordered_products, checkout
 
 urlpatterns = [
