@@ -1,10 +1,11 @@
-FROM python:3.8
-ENV PYTHONUNBUFFERED=1
-RUN mkdir -p /backend
-WORKDIR /backend
-COPY . /backend
-RUN pip install virtualenvwrapper
-RUN python3 -m venv /venv
-RUN /venv/bin/pip install -U pip
-RUN /usr/local/bin/python -m pip install --upgrade pip
-RUN /venv/bin/pip install -r requirements.txt
+
+FROM python:3.7
+ENV PYTHONUNBUFFERED 1
+ENV DEBUG False
+COPY requirements.txt /code/requirements.txt
+WORKDIR /code
+RUN pip install -r requirements.txt
+ADD . .
+# RUN python manage.py collectstatic --noinput
+
+CMD [ "gunicorn", "--bind", "0.0.0.0", "-p", "8000",  "core.wsgi" ]

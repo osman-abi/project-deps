@@ -1,0 +1,48 @@
+version: "3.8"
+services:
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: dev_nginx
+    restart: "always"
+    ports:
+        - "80:80"
+    volumes:
+        - /var/run/docker.sock:/tmp/docker.sock:ro
+        - ./nginx/vhost/:/etc/nginx/vhost.d:ro
+        - ./nginx/conf.d/client_max_body_size.conf:/etc/nginx/conf.d/client_max_body_size.conf:ro
+        - ./static/:/deps/static
+        - ./media/:/deps/media
+        - ./nginx/proxy.conf/:/etc/nginx/proxy.conf
+  # Postgre SQL
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ../data/db:/var/lib/postgresql/data
+    env_file: ./.env
+
+    container_name: postgres_db
+
+  # Django Application
+  web:
+      container_name: dev_backend
+      build: .
+      ports:
+          - "8000:8000"
+      volumes:
+          - .:/code
+          - ./static/:/code/static
+          - ./media/:/code/media
+      depends_on:
+          - "db"
+      env_file: ./.env
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
+
+
+
