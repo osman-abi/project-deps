@@ -9,8 +9,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.filters import OrderingFilter, SearchFilter
 
-from .serializers import ParentCategorySerializer, ProductSerializer, FilterSerializer
-from .models import ParentCategory, Product
+from .serializers import ParentCategorySerializer, ProductImageSerializer, ProductSerializer, FilterSerializer
+from .models import ParentCategory, Product, ProductImages
 from .utils import related_products
 
 
@@ -19,6 +19,12 @@ from .utils import related_products
 class CategoryAPIView(ListAPIView):
     queryset = ParentCategory.objects.all()
     serializer_class = ParentCategorySerializer
+    permission_classes = [AllowAny]
+
+
+class ImagesAPIView(ListAPIView):
+    queryset = ProductImages.objects.all()
+    serializer_class = ProductImageSerializer
     permission_classes = [AllowAny]
 
 
@@ -62,3 +68,4 @@ product_api = ProductAPIView.as_view()
 search_api = SearchProductAPIView.as_view()
 filter_api = FilterProductAPIView.as_view()
 related_product_api = RelatedProductAPIView.as_view()
+images = ImagesAPIView.as_view()
