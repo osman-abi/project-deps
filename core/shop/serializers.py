@@ -70,7 +70,6 @@ class ProductSerializer(ModelSerializer):
     category = ProductCategorySerializer()
     type = ProductTypeSerializer()
     model = ProductModelSerializer()
-    images = ProductImageSerializer()
 
     class Meta:
         model = Product
