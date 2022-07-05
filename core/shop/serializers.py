@@ -23,7 +23,7 @@ class ChildCategorySerializer(ModelSerializer):
 
 
 class ParentCategorySerializer(ModelSerializer):
-    childs = ChildCategorySerializer()
+    childs = ChildCategorySerializer(read_only=True)
     # subcategories = serializers.SerializerMethodField()
 
     class Meta:
