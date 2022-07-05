@@ -8,20 +8,7 @@ import json
 from django.core.serializers import serialize
 
 
-class ParentCategorySerializer(ModelSerializer):
-    childs = serializers.SerializerMethodField()
-    subcategories = serializers.SerializerMethodField()
 
-    class Meta:
-        model = ParentCategory
-        fields = ['title', 'childs', 'subcategories']
-
-    def get_childs(self, obj):
-        return json.loads(serialize(format='json', queryset=obj.childcategory_set.all()))
-
-    def get_subcategories(self, obj):
-        for i in obj.childcategory_set.all():
-            return json.loads(serialize(format='json', queryset=i.subcategory_set.all()))
 
 
 class ChildCategorySerializer(ModelSerializer):
@@ -33,6 +20,22 @@ class ChildCategorySerializer(ModelSerializer):
 
     def get_subcategory(self, obj):
         return json.loads(serialize(format='json', queryset=obj.subcategory_set.all()))
+
+
+class ParentCategorySerializer(ModelSerializer):
+    childs = ChildCategorySerializer()
+    # subcategories = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ParentCategory
+        fields = ['title', 'childs']
+
+    # def get_childs(self, obj):
+    #     return json.loads(serialize(format='json', queryset=obj.childcategory_set.all()))
+
+    # def get_subcategories(self, obj):
+    #     for i in obj.childcategory_set.all():
+    #         return json.loads(serialize(format='json', queryset=i.subcategory_set.all()))
 
 
 class SubCategorySerializer(ModelSerializer):
