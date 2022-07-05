@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.filters import OrderingFilter, SearchFilter
 
 from .serializers import CheckoutSerializer, ParentCategorySerializer, ProductImageSerializer, ProductSerializer, FilterSerializer, OrderedProductsSerializer
-from .models import CheckOut, ParentCategory, Product, ProductImages
+from .models import CheckOut, ChildCategory, ParentCategory, Product, ProductImages
 from .utils import related_products
 
 
@@ -32,6 +32,16 @@ def child_categories(request,pk):
     childs = parent.childcategory_set.all()
     data = json.loads(serialize(format='json', queryset=childs))
     return JsonResponse(data, safe=False)
+
+
+@swagger_auto_schema(method='get')
+@api_view(['GET'])
+def sub_categories(request,pk):
+    parent = ChildCategory.objects.get(pk=pk)
+    childs = parent.childcategory_set.all()
+    data = json.loads(serialize(format='json', queryset=childs))
+    return JsonResponse(data, safe=False)
+
 
 
 class ImagesAPIView(ListAPIView):
