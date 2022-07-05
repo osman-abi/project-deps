@@ -31,7 +31,7 @@ def child_categories(request,pk):
     parent = ParentCategory.objects.get(pk=pk)
     childs = parent.childcategory_set.all()
     data = json.loads(serialize(format='json', queryset=childs))
-    return JsonResponse(data)
+    return JsonResponse(data, safe=False)
 
 
 class ImagesAPIView(ListAPIView):
