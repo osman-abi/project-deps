@@ -34,6 +34,15 @@ def user_list(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
+class CurrentUserView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+
+user_detail = CurrentUserView.as_view()
+
+
 class RegisterView(generics.GenericAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [permissions.AllowAny]

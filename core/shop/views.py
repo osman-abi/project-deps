@@ -3,7 +3,7 @@ from django.core.serializers import serialize
 
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -47,6 +47,13 @@ class RelatedProductAPIView(APIView):
         return related_products(pk)
 
 
+
+class ProductDetailAPIView(RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'pk'
+
+
 class FilterProductAPIView(APIView):
 
     def post(self, request):
@@ -83,6 +90,7 @@ category_api = CategoryAPIView.as_view()
 product_api = ProductAPIView.as_view()
 search_api = SearchProductAPIView.as_view()
 filter_api = FilterProductAPIView.as_view()
+product_detail = ProductDetailAPIView.as_view()
 related_product_api = RelatedProductAPIView.as_view()
 checkout = CheckOutAPIView.as_view()
 ordered_products = OrderedProductsAPIView.as_view()
