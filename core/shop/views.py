@@ -22,7 +22,11 @@ class CategoryAPIView(ListAPIView):
     serializer_class = ParentCategorySerializer
     permission_classes = [AllowAny]
 
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework.decorators import api_view
 
+@swagger_auto_schema(method='get')
+@api_view(['GET'])
 def child_categories(request,pk):
     parent = ParentCategory.objects.get(pk=pk)
     childs = parent.childcategory_set.all()
