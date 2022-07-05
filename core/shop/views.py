@@ -29,7 +29,7 @@ from rest_framework.decorators import api_view
 @api_view(['GET'])
 def child_categories(request,pk):
     parent = ParentCategory.objects.get(pk=pk)
-    childs = parent.subcategory_set.all()
+    childs = parent.childcategory_set.all()
     data = json.loads(serialize(format='json', queryset=childs))
     return JsonResponse(data, safe=False)
 
@@ -38,7 +38,7 @@ def child_categories(request,pk):
 @api_view(['GET'])
 def sub_categories(request,pk):
     parent = ChildCategory.objects.get(pk=pk)
-    childs = parent.childcategory_set.all()
+    childs = parent.subcategory_set.all()
     data = json.loads(serialize(format='json', queryset=childs))
     return JsonResponse(data, safe=False)
 
