@@ -1,5 +1,6 @@
 import json
 from django.core.serializers import serialize
+from django.http import JsonResponse
 
 from django.shortcuts import render
 from rest_framework import status
@@ -20,6 +21,13 @@ class CategoryAPIView(ListAPIView):
     queryset = ParentCategory.objects.all()
     serializer_class = ParentCategorySerializer
     permission_classes = [AllowAny]
+
+
+def child_categories(request,pk):
+    parent = ParentCategory.objects.get(pk=pk)
+    childs = parent.childcategory_set.all()
+    data = json.loads(serialize(format='json', queryset=childs))
+    return JsonResponse(data)
 
 
 class ImagesAPIView(ListAPIView):

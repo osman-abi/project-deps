@@ -23,12 +23,12 @@ class ChildCategorySerializer(ModelSerializer):
 
 
 class ParentCategorySerializer(ModelSerializer):
-    childs = ChildCategorySerializer(read_only=True)
+    # childs = ChildCategorySerializer(read_only=True)
     # subcategories = serializers.SerializerMethodField()
 
     class Meta:
         model = ParentCategory
-        fields = ['title', 'childs']
+        fields = '__all__'
 
     # def get_childs(self, obj):
     #     return json.loads(serialize(format='json', queryset=obj.childcategory_set.all()))
