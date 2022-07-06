@@ -36,4 +36,5 @@ class Slide(models.Model):
     title = models.CharField(max_length=400, blank=True, null=True, verbose_name='başlıq')
     text = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='slide/')
+    mobile_image = models.ImageField(upload_to='mobile/')
     text_string = models.TextField()

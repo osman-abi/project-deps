@@ -52,6 +52,12 @@ class ProductImageSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class ProductDescriptionsSerializer(ModelSerializer):
+    class Meta:
+        model = ProductDescriptions
+        fields = '__all__'
+
+
 class ProductTypeSerializer(ModelSerializer):
     class Meta:
         model = ProductType
@@ -87,6 +93,7 @@ class ProductSerializer(ModelSerializer):
     category2 = ProductCategory2Serializer()
     category3 = ProductCategorySerializer()
     images = ProductImageSerializer(read_only=True, many=True)
+    description = ProductDescriptionsSerializer(read_only=True, many=True)
     type = ProductTypeSerializer()
     model = ProductModelSerializer()
 

@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.db import models
 from account.models import User
 # Create your models here.
@@ -43,6 +44,12 @@ class ProductType(models.Model):
 
 class ProductModel(models.Model):
     title = models.CharField(max_length=200, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+
+
+class ProductDescriptions(models.Model):
+    title = models.CharField(max_length=200, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
 
 
 class Product(models.Model):
@@ -54,7 +61,8 @@ class Product(models.Model):
     title = models.CharField(max_length=200, blank=True, null=True, verbose_name='başlıq')
     weight = models.FloatField(blank=True, null=True)
     type = models.ForeignKey(ProductType, on_delete=models.CASCADE)
-    model = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
+    model = models.ManyToManyField(ProductModel)
+    description = models.ManyToManyField(ProductDescriptions)
     price = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     code = models.CharField(max_length=9, blank=True, null=True)
     is_bestseller = models.BooleanField(default=False)

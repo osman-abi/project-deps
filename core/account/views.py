@@ -114,4 +114,5 @@ class UpdateProfileView(generics.UpdateAPIView):
 
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
+    lookup_field = 'pk'
     serializer_class = ChangeUserSerializer
