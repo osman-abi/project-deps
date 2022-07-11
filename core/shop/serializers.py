@@ -113,6 +113,12 @@ class CheckoutSerializer(ModelSerializer):
         model = CheckOut
         fields = '__all__'
 
+
+class CheckoutProductSerializer(ModelSerializer):
+    class Meta:
+        model = CheckoutProducts
+        fields = '__all__'
+
     
 class OrderedProductsSerializer(ModelSerializer):
     products = ProductSerializer(read_only=True, many=True)

@@ -70,6 +70,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -81,7 +82,9 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
-    )
+    ),
+    'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE':10
 }
 
 SIMPLE_JWT = {
@@ -136,7 +139,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
 
@@ -173,6 +176,24 @@ USE_I18N = True
 
 USE_TZ = True
 
+# from django.utils.translation import gettext_lazy as _
+
+# LANGUAGES = (
+#     ('az', _('Azerbaijani')),
+#     ('ru', _('Russian')),
+#     ('en', _("English"))
+# )
+
+# LOCALE_PATHS = (
+#     os.path.join(BASE_DIR, 'locale'),
+# )
+
+# MODELTRANSLATION_LANGUAGES = ('az', 'ru', 'en')
+
+# MODELTRANSLATION_TRANSLATION_FILES = (
+#     'pages.translation',
+#     'shop.translation'
+# )
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/

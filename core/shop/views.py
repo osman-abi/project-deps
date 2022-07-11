@@ -5,13 +5,13 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.filters import OrderingFilter, SearchFilter
 
 from .serializers import CheckoutSerializer, ParentCategorySerializer, ProductImageSerializer, ProductSerializer, FilterSerializer, OrderedProductsSerializer
-from .models import CheckOut, ChildCategory, ParentCategory, Product, ProductImages
+from .models import CheckOut, CheckoutProducts, ChildCategory, ParentCategory, Product, ProductImages
 from .utils import related_products
 
 
@@ -23,7 +23,7 @@ class CategoryAPIView(ListAPIView):
     permission_classes = [AllowAny]
 
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 
 @swagger_auto_schema(method='get')
 @api_view(['GET'])
@@ -52,6 +52,17 @@ class ImagesAPIView(ListAPIView):
 
 class ProductAPIView(ListAPIView):
     queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [AllowAny]
+
+class FeaturedProductAPIView(ListAPIView):
+    queryset = Product.objects.filter(is_featured=True)
+    serializer_class = ProductSerializer
+    permission_classes = [AllowAny]
+
+
+class BestsellerProductAPIView(ListAPIView):
+    queryset = Product.objects.filter(is_bestseller=True)
     serializer_class = ProductSerializer
     permission_classes = [AllowAny]
 
@@ -93,7 +104,7 @@ class FilterProductAPIView(APIView):
 
 
 class CheckOutAPIView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         serializer_class = CheckoutSerializer(data=request.data)
@@ -102,10 +113,20 @@ class CheckOutAPIView(APIView):
             return Response(serializer_class.data, status=status.HTTP_200_OK)
         return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class OrderedProductsAPIView(ListAPIView):
-    queryset = CheckOut.objects.all()
+@swagger_auto_schema(method='get')
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def ordered_products(request,pk):
+    checkout = CheckOut.objects.filter(pk=pk).first()
+    checkout_products = checkout.checkout_products.all()
+    data = json.loads(serialize('json', checkout_products))
+    return Response(data)
+
+
+class CheckoutProductsAPIView(ListAPIView):
+    queryset = CheckoutProducts.objects.all()
     serializer_class = OrderedProductsSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
 
 category_api = CategoryAPIView.as_view()
@@ -115,4 +136,6 @@ filter_api = FilterProductAPIView.as_view()
 product_detail = ProductDetailAPIView.as_view()
 related_product_api = RelatedProductAPIView.as_view()
 checkout = CheckOutAPIView.as_view()
-ordered_products = OrderedProductsAPIView.as_view()
+featured_products = FeaturedProductAPIView.as_view()
+best_products = BestsellerProductAPIView.as_view()
+checkout_product = CheckoutProductsAPIView.as_view()
