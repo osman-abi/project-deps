@@ -93,7 +93,7 @@ class FilterProductAPIView(APIView):
         kwargs = dict()
         serializer = FilterSerializer(data=request.data)
         if serializer.is_valid():
-            categories = serializer.validated_data.get('category')
+            categories = serializer.validated_data.get('category3')
             min_price = serializer.validated_data.get('min_price', '')
             max_price = serializer.validated_data.get('max_price', '')
             kwargs['category__id__in'] = categories
