@@ -108,10 +108,9 @@ class FilterSerializer(Serializer):
     max_price = serializers.FloatField()
 
 
-class CheckoutSerializer(ModelSerializer):
-    class Meta:
-        model = CheckOut
-        fields = '__all__'
+class CheckoutSerializer(Serializer):
+    checkout_products = serializers.ListField()
+    
 
 
 class CheckoutProductSerializer(ModelSerializer):

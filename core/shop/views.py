@@ -109,9 +109,18 @@ class CheckOutAPIView(APIView):
     def post(self, request):
         serializer_class = CheckoutSerializer(data=request.data)
         if serializer_class.is_valid():
-            serializer_class.save()
-            return Response(serializer_class.data, status=status.HTTP_200_OK)
-        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+            checkout_products_ = serializer_class.validated_data.get('checkout_products')
+            check = CheckOut.objects.create(user=request.user)
+            for i in checkout_products_:
+                check_prod = CheckoutProducts.objects.create(
+                    product_id = i.get('product_id'),
+                    quantity = i.get('quantity'),
+                )
+                check.checkout_products.add(check_prod)
+                check.save()
+        #     serializer_class.save()
+        #     return Response(serializer_class.data, status=status.HTTP_200_OK)
+        # return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @swagger_auto_schema(method='get')
 @api_view(['GET'])
@@ -119,8 +128,14 @@ class CheckOutAPIView(APIView):
 def ordered_products(request,pk):
     checkout = CheckOut.objects.filter(pk=pk).first()
     checkout_products = checkout.checkout_products.all()
-    data = json.loads(serialize('json', checkout_products))
-    return Response(data)
+    array = []
+    json = dict()
+    for i in checkout_products:
+        product = Product.objects.filter(id=i.product_id).first()
+        array.append(json.loads(serialize('json', checkout_products)))
+        json['quantity'] = i.quantity
+        json['data'] = array
+    return JsonResponse(json, safe=False)
 
 
 class CheckoutProductsAPIView(ListAPIView):

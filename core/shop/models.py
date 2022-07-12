@@ -86,7 +86,7 @@ class CheckoutProducts(models.Model):
 
 class CheckOut(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    checkout_products = models.ManyToManyField(CheckoutProducts)
+    checkout_products = models.ManyToManyField(CheckoutProducts, blank=True)
 
 
     
