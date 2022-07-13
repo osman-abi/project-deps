@@ -21,7 +21,7 @@ services:
       - 5432:5432
     volumes:
       - ../data/db:/var/lib/postgresql/data
-    env_file: ./.env
+    env_file: ./core/.env
 
     container_name: postgres_db
 
@@ -37,7 +37,7 @@ services:
           - ./media/:/code/media
       depends_on:
           - "db"
-      env_file: ./.env
+      env_file: ./core/.env
   frontend:
     container_name: frontend
     build:
