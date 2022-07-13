@@ -43,8 +43,8 @@ services:
     build:
       context: ./deps_front
       dockerfile: Dockerfile
-    volumes:
-      - build_folder:/frontend #"build" folder fills builder_folder
+    # volumes:
+    #   - build_folder:/frontend #"build" folder fills builder_folder
 networks:
   default:
     external:
