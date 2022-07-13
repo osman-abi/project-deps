@@ -28,7 +28,7 @@ services:
   # Django Application
   web:
       container_name: dev_backend
-      build: .
+      build: ./core
       ports:
           - "8000:8000"
       volumes:
@@ -38,7 +38,13 @@ services:
       depends_on:
           - "db"
       env_file: ./.env
-
+  frontend:
+    container_name: frontend
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    volumes:
+      - build_folder:/frontend #"build" folder fills builder_folder
 networks:
   default:
     external:
