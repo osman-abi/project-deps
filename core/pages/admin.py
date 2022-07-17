@@ -29,3 +29,5 @@ class OurTeamAdmin(admin.ModelAdmin):
 
 admin.site.register(About)
 admin.site.register(Slide)
+admin.site.register(Banner)
+admin.site.register(Info)
