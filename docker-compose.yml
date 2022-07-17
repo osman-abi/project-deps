@@ -38,11 +38,11 @@ services:
       depends_on:
           - "db"
       env_file: ./core/.env
-  frontend:
-    container_name: frontend
-    build:
-      context: ./deps_front
-      dockerfile: Dockerfile
+  # frontend:
+  #   container_name: frontend
+  #   build:
+  #     context: ./deps_front
+  #     dockerfile: Dockerfile
     # volumes:
     #   - build_folder:/frontend #"build" folder fills builder_folder
 networks:
