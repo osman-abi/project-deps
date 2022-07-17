@@ -21,14 +21,14 @@ services:
       - 5432:5432
     volumes:
       - ../data/db:/var/lib/postgresql/data
-    env_file: ./core/.env
+    env_file: ./.env
 
     container_name: postgres_db
 
   # Django Application
   web:
       container_name: dev_backend
-      build: ./core
+      build: .
       ports:
           - "8000:8000"
       volumes:
@@ -37,14 +37,8 @@ services:
           - ./media/:/code/media
       depends_on:
           - "db"
-      env_file: ./core/.env
-  # frontend:
-  #   container_name: frontend
-  #   build:
-  #     context: ./deps_front
-  #     dockerfile: Dockerfile
-    # volumes:
-    #   - build_folder:/frontend #"build" folder fills builder_folder
+      env_file: ./.env
+
 networks:
   default:
     external:
