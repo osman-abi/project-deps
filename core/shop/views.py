@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.filters import OrderingFilter, SearchFilter
 
-from .serializers import CheckoutSerializer, ParentCategorySerializer, ProductImageSerializer, ProductSerializer, FilterSerializer, OrderedProductsSerializer
+from .serializers import CheckoutSerializer, FilterChildSerializer, FilterParentSerializer, ParentCategorySerializer, ProductImageSerializer, ProductSerializer, FilterSerializer, OrderedProductsSerializer
 from .models import CheckOut, CheckoutProducts, ChildCategory, ParentCategory, Product, ProductImages
 from .utils import related_products
 
@@ -96,7 +96,7 @@ class FilterProductAPIView(APIView):
             categories = serializer.validated_data.get('category3')
             min_price = serializer.validated_data.get('min_price', '')
             max_price = serializer.validated_data.get('max_price', '')
-            kwargs['category__id__in'] = categories
+            kwargs['category3__id__in'] = categories
             kwargs['price__gt'] = min_price
             kwargs['price__lt'] = max_price
             products = Product.objects.filter(**kwargs)
@@ -109,12 +109,12 @@ class FilterProductByParentCategory(APIView):
 
     def post(self,request):
         kwargs = dict()
-        serializer = FilterSerializer(data=request.data)
+        serializer = FilterParentSerializer(data=request.data)
         if serializer.is_valid():
             categories = serializer.validated_data.get('category1')
             min_price = serializer.validated_data.get('min_price', '')
             max_price = serializer.validated_data.get('max_price', '')
-            kwargs['category__id__in'] = categories
+            kwargs['category1__id__in'] = categories
             kwargs['price__gt'] = min_price
             kwargs['price__lt'] = max_price
             products = Product.objects.filter(**kwargs)
@@ -127,12 +127,12 @@ class FilterProductByChildCategory(APIView):
 
     def post(self,request):
         kwargs = dict()
-        serializer = FilterSerializer(data=request.data)
+        serializer = FilterChildSerializer(data=request.data)
         if serializer.is_valid():
             categories = serializer.validated_data.get('category2')
             min_price = serializer.validated_data.get('min_price', '')
             max_price = serializer.validated_data.get('max_price', '')
-            kwargs['category__id__in'] = categories
+            kwargs['category2__id__in'] = categories
             kwargs['price__gt'] = min_price
             kwargs['price__lt'] = max_price
             products = Product.objects.filter(**kwargs)

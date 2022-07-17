@@ -103,7 +103,19 @@ class ProductSerializer(ModelSerializer):
 
 
 class FilterSerializer(Serializer):
-    category = serializers.ListField()
+    category3 = serializers.ListField()
+    min_price = serializers.FloatField()
+    max_price = serializers.FloatField()
+
+
+class FilterParentSerializer(Serializer):
+    category1 = serializers.ListField()
+    min_price = serializers.FloatField()
+    max_price = serializers.FloatField()
+
+
+class FilterChildSerializer(Serializer):
+    category2 = serializers.ListField()
     min_price = serializers.FloatField()
     max_price = serializers.FloatField()
 
