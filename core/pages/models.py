@@ -1,3 +1,4 @@
+from ctypes import addressof
 from django.db import models
 
 
@@ -38,3 +39,27 @@ class Slide(models.Model):
     image = models.ImageField(upload_to='slide/')
     mobile_image = models.ImageField(upload_to='mobile/')
     text_string = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+
+class Banner(models.Model):
+    image = models.ImageField(upload_to='banner/')
+    title = models.CharField(max_length=500, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+class Info(models.Model):
+    address       = models.CharField(max_length=300, blank=True, null=True)
+    email_address = models.CharField(max_length=300, blank=True, null=True)
+    number1       = models.CharField(max_length=300, blank=True, null=True) 
+    number2       = models.CharField(max_length=300, blank=True, null=True) 
+    number3       = models.CharField(max_length=300, blank=True, null=True) 
+    openTimes     = models.CharField(max_length=300, blank=True, null=True)
+    coordinates   = models.CharField(max_length=300, blank=True, null=True)
+
+    def __str__(self):
+        return self.address

@@ -32,9 +32,23 @@ class SlideAPIView(ListAPIView):
     permission_classes = [AllowAny]
 
 
+class BannerAPIView(ListAPIView):
+    queryset = Banner.objects.all()
+    serializer_class = BannerSerializer
+    permission_classes = [AllowAny]
+
+
+class InfoAPIView(ListAPIView):
+    queryset = Info.objects.all()
+    serializer_class = InfoSerializer
+    permission_classes = [AllowAny]
+
+
 ask_question_api = AskQuestionAPIView.as_view()
 write_director_api = WriteDirectorAPIView.as_view()
 request_price_api = RequestPriceAPIView.as_view()
 about_api = AboutAPIView.as_view()
 our_team_api = OurTeamAPIView.as_view()
 slide_api = SlideAPIView.as_view()
+banner_api = BannerAPIView.as_view()
+info_api = InfoAPIView.as_view()

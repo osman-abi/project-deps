@@ -11,7 +11,7 @@ urlpatterns = [
     path('product/', search_api),
     path('filter/', filter_api),
     path('product-detail/<int:pk>/', product_detail),
-    path('ordered-products/', ordered_products),
+    path('ordered-products/<int:pk>/', ordered_products),
     path('checkout/', checkout),
     path('featured-products/', featured_products),
     path('bestseller-products/', best_products),

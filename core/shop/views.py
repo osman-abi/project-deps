@@ -97,10 +97,50 @@ class FilterProductAPIView(APIView):
             min_price = serializer.validated_data.get('min_price', '')
             max_price = serializer.validated_data.get('max_price', '')
             kwargs['category__id__in'] = categories
+            kwargs['price__gt'] = min_price
+            kwargs['price__lt'] = max_price
             products = Product.objects.filter(**kwargs)
             products_ = json.loads(serialize('json',products))
             return Response(products_, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FilterProductByParentCategory(APIView):
+
+    def post(self,request):
+        kwargs = dict()
+        serializer = FilterSerializer(data=request.data)
+        if serializer.is_valid():
+            categories = serializer.validated_data.get('category1')
+            min_price = serializer.validated_data.get('min_price', '')
+            max_price = serializer.validated_data.get('max_price', '')
+            kwargs['category__id__in'] = categories
+            kwargs['price__gt'] = min_price
+            kwargs['price__lt'] = max_price
+            products = Product.objects.filter(**kwargs)
+            products_ = json.loads(serialize('json',products))
+            return Response(products_, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FilterProductByChildCategory(APIView):
+
+    def post(self,request):
+        kwargs = dict()
+        serializer = FilterSerializer(data=request.data)
+        if serializer.is_valid():
+            categories = serializer.validated_data.get('category2')
+            min_price = serializer.validated_data.get('min_price', '')
+            max_price = serializer.validated_data.get('max_price', '')
+            kwargs['category__id__in'] = categories
+            kwargs['price__gt'] = min_price
+            kwargs['price__lt'] = max_price
+            products = Product.objects.filter(**kwargs)
+            products_ = json.loads(serialize('json',products))
+            return Response(products_, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 class CheckOutAPIView(APIView):
@@ -119,23 +159,25 @@ class CheckOutAPIView(APIView):
                 check.checkout_products.add(check_prod)
                 check.save()
         #     serializer_class.save()
-        #     return Response(serializer_class.data, status=status.HTTP_200_OK)
-        # return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer_class.data, status=status.HTTP_200_OK)
+        return Response(serializer_class.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @swagger_auto_schema(method='get')
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def ordered_products(request,pk):
     checkout = CheckOut.objects.filter(pk=pk).first()
     checkout_products = checkout.checkout_products.all()
+    # print('print >>>', checkout_products)
+
     array = []
-    json = dict()
+    json_ = dict()
     for i in checkout_products:
-        product = Product.objects.filter(id=i.product_id).first()
-        array.append(json.loads(serialize('json', checkout_products)))
-        json['quantity'] = i.quantity
-        json['data'] = array
-    return JsonResponse(json, safe=False)
+        product = Product.objects.filter(id=i.product_id)
+        array.append(json.loads(serialize('json', product)))
+        json_['quantity'] = i.quantity
+        json_['data'] = array
+    return JsonResponse(json_, safe=False)
 
 
 class CheckoutProductsAPIView(ListAPIView):

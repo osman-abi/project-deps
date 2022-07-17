@@ -24,3 +24,14 @@ class SlideSerializer(ModelSerializer):
     class Meta:
         model = Slide
         fields = '__all__'
+
+
+class BannerSerializer(ModelSerializer):
+    class Meta:
+        model = Banner
+        fields = '__all__'
+
+class InfoSerializer(ModelSerializer):
+    class Meta:
+        model = Info
+        fields = '__all__'
